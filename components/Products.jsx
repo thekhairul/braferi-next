@@ -1,6 +1,8 @@
 import { getProducts } from "@/services/productsApi";
+import { flattenCollection } from "@/utils/index";
 import { gql } from "graphql-request";
 import { useQuery } from "react-query";
+import Product from "./Product";
 
 export default function Products() {
   const productQuery = gql`
@@ -43,10 +45,16 @@ export default function Products() {
     ["/products", productQuery],
     getProducts
   );
+  let products = [];
+  if (data) products = flattenCollection(data.products.edges, true);
+  console.log(products);
+
   return (
     <div className="container mx-auto">
-      {data ? JSON.stringify(data) : null}
-      <p>Hello</p>
+      {isLoading ? <p>Hello</p> : null}
+      <div className="columns-1 sm:columns-2 lg:columns-4 gap-6 py-6">
+        {products.map(product => <Product key={product.id} product={product}/>)}
+      </div>
     </div>
   );
 }
