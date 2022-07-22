@@ -1,6 +1,6 @@
+import { getProducts } from "@/services/productsApi";
 import { gql } from "graphql-request";
 import { useQuery } from "react-query";
-import { getProducts } from "../services/products";
 
 export default function Products() {
   const productQuery = gql`
@@ -13,6 +13,15 @@ export default function Products() {
             title
             tags
             description
+            variants(first: 1) {
+              edges {
+                node {
+                  priceV2 {
+                    amount
+                  }
+                }
+              }
+            }
             featuredImage {
               id
               url

@@ -1,5 +1,3 @@
-// create and export product api call functions with axios
-
 import gqlClient from "./gqlClient";
 
 export const getProducts = function({queryKey}) {

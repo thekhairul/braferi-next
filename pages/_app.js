@@ -1,6 +1,6 @@
+import '@/styles/globals.css';
 import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import '../styles/globals.css';
 
 
 function MyApp({ Component, pageProps }) {
