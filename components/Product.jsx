@@ -1,8 +1,11 @@
-import { useRouter } from "next/router";
+import Modal from "@/components/Modal";
+import { useState } from "react";
 import { TbCurrencyTaka } from "react-icons/tb";
 
 function Product({ product }) {
-  const router = useRouter();
+  const [isQuickViewOpen, setQuickView] = useState(false);
+  const closeQuickView = () => setQuickView(false);
+
   return (
     <div className="rounded-3xl overflow-hidden bg-white shadow-md mb-6 break-inside-avoid">
       <img src={product.featuredImage.url} alt={product.title} />
@@ -17,12 +20,16 @@ function Product({ product }) {
           </p>
           <button
             className="bg-violet-600 hover:bg-violet-800 text-white font-bold px-6 py-3 rounded-full"
-            onClick={() => router.push(`/products/${product.handle}`)}
+            onClick={() => setQuickView(true)}
           >
-            Add to Cart
+            Quick View
           </button>
         </div>
       </div>
+
+      <Modal appendTo="#modals" isOpen={isQuickViewOpen} closeModal={closeQuickView}>
+        hi
+      </Modal>
     </div>
   );
 }
