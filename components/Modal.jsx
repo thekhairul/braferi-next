@@ -15,9 +15,8 @@ function Modal({ children, appendTo, isOpen, closeModal }) {
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="modal">
+    <div className="modal fixed inset-0 bg-gray-700 p-4 h-screen overflow-y-auto flex flex-col justify-center items-center" style={{background: 'rgba(0,0,0,0.7)'}}>
       {children}
-      <button onClick={closeModal}>X</button>
     </div>,
     modalContainer
   );
