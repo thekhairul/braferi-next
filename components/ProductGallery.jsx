@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactImageMagnify from "react-image-magnify";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -9,12 +9,19 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 
-function ProductGallery({ images }) {
+function ProductGallery({ images, goToImgId }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [swiperRef, setSwiperRef] = useState(null);
+
+  useEffect(() => {
+    if (!goToImgId) return;
+    const slideIndex = images.findIndex(image => image.id === goToImgId);
+    swiperRef.slideTo(slideIndex);
+  }, [goToImgId]);
 
   return (
     <div>
-      <Swiper spaceBetween={10} thumbs={{ swiper: thumbsSwiper }} modules={[Thumbs]} className="product-gallery mb-2">
+      <Swiper onSwiper={setSwiperRef} spaceBetween={10} thumbs={{ swiper: thumbsSwiper }} modules={[Thumbs]} className="product-gallery mb-2">
         {images.map((image) => (
           <SwiperSlide key={image.id}>
             <ReactImageMagnify

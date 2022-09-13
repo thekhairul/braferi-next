@@ -15,11 +15,24 @@ export default function Products() {
             title
             tags
             description
-            variants(first: 1) {
+            options {
+              id
+              name
+              values
+            }
+            variants(first: 20) {
               edges {
                 node {
+                  selectedOptions {
+                    name
+                    value
+                  }
                   priceV2 {
                     amount
+                  }
+                  image {
+                    id
+                    url
                   }
                 }
               }
