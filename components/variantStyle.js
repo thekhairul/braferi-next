@@ -2,7 +2,7 @@ import styled from "styled-components";
 import tw from "twin.macro";
 
 const StyledVariant = styled.div.attrs({
-  className: "p-2 bg-green",
+  className: "my-4",
 })`
     & {
         .btn-variant {
