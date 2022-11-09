@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import StyledVariant from "./variantStyle";
+import StyledVariant from "./styles/variantStyle";
 
 function ProductVariants({ options, variants, onVariantSelect }) {
   const [currentOptions, setOptions] = useState(
@@ -25,7 +25,7 @@ function ProductVariants({ options, variants, onVariantSelect }) {
       {options.map((option) => (
         <div className="mb-4" key={option.id}>
           <h2 className="font-semibold mb-2 uppercase">{option.name}:</h2>
-          <div className="flex gap-2">
+          <div className="inline-flex gap-1 overflow-hidden">
             {option.values.map((value) => (
               <button
                 className={`${currentOptions[option.name] === value ? "btn-variant--selected" : "btn-variant"}`}

@@ -9,7 +9,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <QueryClientProvider client={queryClient}>
       <Header />
-      <Component {...pageProps} />
+      <div className="bg-gray-100">
+        <Component {...pageProps} />
+      </div>
       <div id="modals"></div>
     </QueryClientProvider>
   )

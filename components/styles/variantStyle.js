@@ -6,10 +6,10 @@ const StyledVariant = styled.div.attrs({
 })`
     & {
         .btn-variant {
-            ${tw`px-4 py-2 rounded-full bg-gray-200`}
+            ${tw`px-4 py-2 bg-gray-200`}
         }
         .btn-variant--selected {
-            ${tw`px-4 py-2 rounded-full bg-gray-800 text-white`}
+            ${tw`px-4 py-2 bg-gray-800 text-white`}
         }
     }
 `;

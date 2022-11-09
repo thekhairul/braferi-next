@@ -3,6 +3,7 @@ import ReactImageMagnify from "react-image-magnify";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Navigation, Thumbs } from "swiper";
+import StyledGallery from "./styles/galleryStyle";
 
 // Import Swiper styles
 import "swiper/css";
@@ -15,30 +16,31 @@ function ProductGallery({ images, goToImgId }) {
 
   useEffect(() => {
     if (!goToImgId) return;
-    const slideIndex = images.findIndex(image => image.id === goToImgId);
+    const slideIndex = images.findIndex((image) => image.id === goToImgId);
     swiperRef.slideTo(slideIndex);
   }, [goToImgId]);
 
   return (
-    <div>
-      <Swiper onSwiper={setSwiperRef} spaceBetween={10} thumbs={{ swiper: thumbsSwiper }} modules={[Thumbs]} className="product-gallery mb-2">
+    <StyledGallery>
+      <Swiper onSwiper={setSwiperRef} spaceBetween={10} thumbs={{ swiper: thumbsSwiper }} modules={[Thumbs]}>
         {images.map((image) => (
           <SwiperSlide key={image.id}>
             <ReactImageMagnify
               {...{
                 smallImage: {
-                  alt: "Wristwatch by Ted Baker London",
+                  alt: image.alt,
                   isFluidWidth: true,
-                  src: image.url
+                  src: image.url,
                 },
                 largeImage: {
                   src: image.url,
-                  width: 1200,
-                  height: 1200
+                  width: 600,
+                  height: 600,
                 },
-                enlargedImagePosition: 'over',
-                enlargedImageClassName: 'max-w-none object-cover',
-                className: 'rounded-3xl overflow-hidden'
+                enlargedImagePosition: "over",
+                enlargedImageClassName: "max-w-none object-cover",
+                className: "overflow-hidden",
+                imageClassName: "product-img",
               }}
             />
           </SwiperSlide>
@@ -48,18 +50,18 @@ function ProductGallery({ images, goToImgId }) {
       <Swiper
         onSwiper={setThumbsSwiper}
         navigation
-        spaceBetween={10}
+        spaceBetween={0}
         slidesPerView={4}
         modules={[Navigation, Thumbs]}
         className="product-gallery-nav"
       >
         {images.map((image) => (
           <SwiperSlide key={image.id}>
-            <img src={image.url} alt="" className="rounded-xl" />
+            <img src={image.url} alt="" />
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </StyledGallery>
   );
 }
 
