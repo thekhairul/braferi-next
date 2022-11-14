@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { BsCartPlus } from "react-icons/bs";
-import { TbCurrencyTaka } from "react-icons/tb";
+import { TbCurrencyTaka, TbHeart, TbShoppingCart } from "react-icons/tb";
 import ProductGallery from "./ProductGallery";
 import ProductVariants from "./ProductVariants";
 
@@ -8,14 +7,14 @@ function ProductPreview({ product }) {
   const [currentVariant, setCurrentVariant] = useState(null);
 
   return (
-    <div className="bg-white flex flex-wrap max-h-full overflow-y-auto">
+    <div className="bg-gray-100 flex flex-wrap max-h-full overflow-y-auto">
       <div className="w-full md:w-1/2">
         <ProductGallery images={product.images} goToImgId={currentVariant?.image?.id} />
       </div>
       <div className="w-full md:w-1/2 p-8">
-        <h3 className="text-dark font-semibold text-lg mb-2">{product.title}</h3>
+        <h3 className="text-dark font-bold text-2xl mb-2">{product.title}</h3>
         <p className="mb-4">
-          <span className="text-accent font-bold inline-flex items-center">
+          <span className="text-accent text-3xl font-bold inline-flex items-center">
             <TbCurrencyTaka />
             {~~(currentVariant || product.variants[0])?.priceV2.amount}
           </span>
@@ -25,13 +24,17 @@ function ProductPreview({ product }) {
           <ProductVariants options={product.options} variants={product.variants} onVariantSelect={setCurrentVariant} />
         )}
 
-        <div className="flex rounded-full overflow-hidden">
-          <button className="bg-accent hover:bg-accent-dark text-white font-bold px-6 py-3 flex-grow inline-flex justify-center items-center gap-2">
-            <BsCartPlus />
-            Add To Wishlist
+        <div className="flex justify-center mt-6">
+          <button className="w-12 h-12 mr-2 text-2xl inline-flex justify-center items-center rounded-full text-accent bg-white shadow-lg hover:bg-accent hover:text-white">
+            <TbHeart />
           </button>
-          <button className="bg-accent-dark text-white font-bold px-6 py-3 flex-grow inline-flex items-center justify-center gap-2">
-            <BsCartPlus />
+          <div className="inline-flex bg-white p-2 rounded-l-full shadow-md">
+            <button className="text-dark text-2xl px-2"> - </button>
+            <input type="digit" className="flex-grow text-center w-6" value={1} />
+            <button className="text-dark text-2xl px-2"> + </button>
+          </div>
+          <button className="bg-white text-accent hover:bg-accent-dark hover:text-white border-l px-3 font-semibold rounded-r-full inline-flex items-center justify-center gap-2 shadow-md">
+            <TbShoppingCart className="text-2xl" />
             Add To Cart
           </button>
         </div>

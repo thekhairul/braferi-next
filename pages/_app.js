@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }) {
   const [queryClient] = useState(() => new QueryClient());
   return (
     <QueryClientProvider client={queryClient}>
-      <Header />
+      <Header></Header>
       <div className="bg-gray-100">
         <Component {...pageProps} />
       </div>

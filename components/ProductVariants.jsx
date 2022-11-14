@@ -23,9 +23,9 @@ function ProductVariants({ options, variants, onVariantSelect }) {
   return (
     <StyledVariant>
       {options.map((option) => (
-        <div className="mb-4" key={option.id}>
-          <h2 className="font-semibold mb-2 uppercase">{option.name}:</h2>
-          <div className="inline-flex gap-1 overflow-hidden">
+        <div className="flex-1 border-r border-gray-200" key={option.id}>
+          <h2 className="font-semibold p-4 border-b border-gray-200 uppercase">{option.name}:</h2>
+          <div className="inline-flex flex-wrap p-4 gap-1 overflow-hidden">
             {option.values.map((value) => (
               <button
                 className={`${currentOptions[option.name] === value ? "btn-variant--selected" : "btn-variant"}`}
