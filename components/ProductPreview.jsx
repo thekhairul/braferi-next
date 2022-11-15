@@ -19,7 +19,7 @@ function ProductPreview({ product }) {
             {~~(currentVariant || product.variants[0])?.priceV2.amount}
           </span>
         </p>
-        <p className="text-dark mb-6">{product.description}</p>
+        <p className="text-dark mb-6 line-clamp-5">{product.description}</p>
         {product.options[0].name !== "Title" && (
           <ProductVariants options={product.options} variants={product.variants} onVariantSelect={setCurrentVariant} />
         )}
@@ -30,10 +30,10 @@ function ProductPreview({ product }) {
           </button>
           <div className="inline-flex bg-white p-2 rounded-l-full shadow-md">
             <button className="text-dark text-2xl px-2"> - </button>
-            <input type="digit" className="flex-grow text-center w-6" value={1} />
+            <input type="digit" className="flex-grow text-center w-6 focus:outline-none" placeholder="1" />
             <button className="text-dark text-2xl px-2"> + </button>
           </div>
-          <button className="bg-white text-accent hover:bg-accent-dark hover:text-white border-l px-3 font-semibold rounded-r-full inline-flex items-center justify-center gap-2 shadow-md">
+          <button className="bg-accent text-white hover:bg-accent-dark border-l px-3 font-semibold rounded-r-full inline-flex items-center justify-center gap-2 shadow-md">
             <TbShoppingCart className="text-2xl" />
             Add To Cart
           </button>

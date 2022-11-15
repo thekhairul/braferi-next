@@ -32,8 +32,8 @@ function Product({ product }) {
       </div>
 
       <Modal appendTo="#modals" isOpen={isQuickViewOpen} closeModal={closeQuickView}>
-        <div className="max-w-6xl rounded-lg overflow-hidden shadow-md relative">
-          <button onClick={closeQuickView} className="absolute top-0 right-0 p-4 rounded-full shadow-xl text-dark">
+        <div className="max-w-full md:max-w-6xl rounded-lg overflow-hidden shadow-md relative">
+          <button onClick={closeQuickView} className="absolute z-50 top-0 right-0 p-4 rounded-full shadow-xl text-dark">
             <GrClose />
           </button>
           <ProductPreview product={product} />

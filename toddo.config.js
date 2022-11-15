@@ -5,3 +5,4 @@
 // TODO: implement checkout
 // TODO: create single product view
 // TODO: create search, filter, infinite load
+// TODO: handle SSR

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import tw from "twin.macro";
 
 const StyledVariant = styled.div.attrs({
-  className: "flex bg-white my-4 rounded-md shadow-md",
+  className: "sm:flex bg-white my-4 rounded-md shadow-md",
 })`
   & {
     .btn-variant {
