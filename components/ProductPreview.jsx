@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { TbCurrencyTaka, TbHeart, TbShoppingCart } from "react-icons/tb";
+import Counter from "./Counter";
 import ProductGallery from "./ProductGallery";
 import ProductVariants from "./ProductVariants";
 
@@ -28,11 +29,7 @@ function ProductPreview({ product }) {
           <button className="w-12 h-12 mr-2 text-2xl inline-flex justify-center items-center rounded-full text-accent bg-white shadow-lg hover:bg-accent hover:text-white">
             <TbHeart />
           </button>
-          <div className="inline-flex bg-white p-2 rounded-l-full shadow-md">
-            <button className="text-dark text-2xl px-2"> - </button>
-            <input type="digit" className="flex-grow text-center w-6 focus:outline-none" placeholder="1" />
-            <button className="text-dark text-2xl px-2"> + </button>
-          </div>
+          <Counter className="bg-white p-2 rounded-l-full shadow-md" />
           <button className="bg-accent text-white hover:bg-accent-dark border-l px-3 font-semibold rounded-r-full inline-flex items-center justify-center gap-2 shadow-md">
             <TbShoppingCart className="text-2xl" />
             Add To Cart
