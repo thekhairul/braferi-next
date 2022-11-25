@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import StyledVariant from "./styles/variantStyle";
+import StyledVariantButton from "./styles/variantStyle";
 
 function ProductVariants({ options, variants, onVariantSelect }) {
   const [currentOptions, setOptions] = useState(
@@ -8,6 +8,8 @@ function ProductVariants({ options, variants, onVariantSelect }) {
       return result;
     }, {})
   );
+
+  console.log(variants);
 
   useEffect(() => {
     const selectedVariant = variants.find((variant) =>
@@ -21,24 +23,26 @@ function ProductVariants({ options, variants, onVariantSelect }) {
   };
 
   return (
-    <StyledVariant>
+    <div className="bg-white my-4 rounded-md shadow-md">
       {options.map((option) => (
-        <div className="flex-1 border-r border-gray-200" key={option.id}>
-          <h2 className="font-semibold p-4 border-b border-gray-200 uppercase">{option.name}:</h2>
-          <div className="inline-flex flex-wrap p-4 gap-1 overflow-hidden">
+        <div className="flex items-center border-b border-gray-200" key={option.id}>
+          <h2 className="font-semibold p-4 uppercase">{option.name}:</h2>
+          <div className="flex-grow inline-flex flex-wrap p-4 gap-4 overflow-hidden">
             {option.values.map((value) => (
-              <button
-                className={`${currentOptions[option.name] === value ? "btn-variant--selected" : "btn-variant"}`}
+              <StyledVariantButton
+                isSelected={currentOptions[option.name] === value}
+                color={option.name === "Color" ? value : null}
+                title={value}
                 key={value}
                 onClick={() => changeOption(option.name, value)}
               >
                 {value}
-              </button>
+              </StyledVariantButton>
             ))}
           </div>
         </div>
       ))}
-    </StyledVariant>
+    </div>
   );
 }
 

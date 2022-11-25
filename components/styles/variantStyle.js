@@ -1,17 +1,11 @@
 import styled from "styled-components";
 import tw from "twin.macro";
 
-const StyledVariant = styled.div.attrs({
-  className: "sm:flex bg-white my-4 rounded-md shadow-md",
-})`
-  & {
-    .btn-variant {
-      ${tw`px-4 py-2 border-2 border-dark`}
-    }
-    .btn-variant--selected {
-      ${tw`px-4 py-2 border-2 border-dark bg-dark text-white`}
-    }
-  }
+const StyledVariantButton = styled.button.attrs({})`
+  ${tw`transform-gpu`}
+  background: ${(props) => props.color || tw`bg-gray-200`};
+  ${(props) => (props.color ? tw`w-8 h-8 rounded-full text-[0px]` : tw`px-4 py-2 rounded-md`)}
+  ${(props) => (props.isSelected ? tw`scale-125` : '')};
 `;
 
-export default StyledVariant
+export default StyledVariantButton;
