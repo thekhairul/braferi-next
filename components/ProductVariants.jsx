@@ -9,8 +9,6 @@ function ProductVariants({ options, variants, onVariantSelect }) {
     }, {})
   );
 
-  console.log(variants);
-
   useEffect(() => {
     const selectedVariant = variants.find((variant) =>
       variant.selectedOptions.every((option) => currentOptions[option.name] === option.value)
@@ -31,8 +29,8 @@ function ProductVariants({ options, variants, onVariantSelect }) {
             {option.values.map((value) => (
               <StyledVariantButton
                 isSelected={currentOptions[option.name] === value}
-                color={option.name === "Color" ? value : null}
-                title={value}
+                color={option.name === "Color" ? value.split("#")[1] : null}
+                title={option.name === "Color" ? value.split("#")[0] : value}
                 key={value}
                 onClick={() => changeOption(option.name, value)}
               >

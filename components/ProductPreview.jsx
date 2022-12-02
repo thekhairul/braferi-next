@@ -12,7 +12,7 @@ function ProductPreview({ product }) {
       <div className="w-full md:w-1/2">
         <ProductGallery images={product.images} goToImgId={currentVariant?.image?.id} />
       </div>
-      <div className="w-full md:w-1/2 p-8">
+      <div className="w-full md:w-1/2 p-4 md:p-8">
         <h3 className="text-dark font-bold text-2xl mb-2">{product.title}</h3>
         <p className="mb-4">
           <span className="text-accent text-3xl font-bold inline-flex items-center">

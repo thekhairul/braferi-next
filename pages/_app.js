@@ -13,6 +13,7 @@ function MyApp({ Component, pageProps }) {
         <Component {...pageProps} />
       </div>
       <div id="modals"></div>
+      <div id="sidebars"></div>
     </QueryClientProvider>
   )
 }
