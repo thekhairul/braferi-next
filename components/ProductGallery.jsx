@@ -16,13 +16,20 @@ function ProductGallery({ images, goToImgId }) {
 
   useEffect(() => {
     if (!goToImgId) return;
-    const slideIndex = images.findIndex((image) => image.id === goToImgId);
-    swiperRef.slideTo(slideIndex);
+    swiperRef.slideTo(getSlideIndex(goToImgId));
   }, [goToImgId]);
+
+  const getSlideIndex = (imageId) => images.findIndex((image) => image.id === imageId);
 
   return (
     <StyledGallery>
-      <Swiper onSwiper={setSwiperRef} spaceBetween={10} thumbs={{ swiper: thumbsSwiper }} modules={[Thumbs]}>
+      <Swiper
+        onSwiper={setSwiperRef}
+        spaceBetween={10}
+        thumbs={{ swiper: thumbsSwiper }}
+        modules={[Thumbs]}
+        initialSlide={getSlideIndex(goToImgId)}
+      >
         {images.map((image) => (
           <SwiperSlide key={image.id}>
             <ReactImageMagnify

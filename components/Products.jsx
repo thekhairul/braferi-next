@@ -23,6 +23,8 @@ export default function Products() {
             variants(first: 20) {
               edges {
                 node {
+                  id
+                  quantityAvailable
                   selectedOptions {
                     name
                     value

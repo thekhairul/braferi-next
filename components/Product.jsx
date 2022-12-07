@@ -16,7 +16,7 @@ function Product({ product }) {
         <h3 className="font-semibold text-md text-dark py-2 mb-4">{product.title}</h3>
         <div className="flex gap-2 flex-wrap justify-between items-center">
           <p>
-            <span className="text-accent font-bold inline-flex items-center">
+            <span className="text-accent text-xl font-bold inline-flex items-center">
               <TbCurrencyTaka />
               {~~product.variants[0].priceV2.amount}
             </span>
@@ -35,7 +35,7 @@ function Product({ product }) {
         <div className="max-w-full md:max-w-6xl rounded-lg overflow-hidden shadow-md relative">
           <button
             onClick={closeQuickView}
-            className="absolute z-50 top-0 right-0 w-10 h-10 inline-flex justify-center p-2 rounded-bl-full shadow-xl bg-white text-dark"
+            className="absolute z-50 top-0 right-0 w-10 h-10 inline-flex py-2 pl-4 rounded-bl-full shadow-xl bg-white text-dark"
           >
             <GrClose />
           </button>
