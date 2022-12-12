@@ -1,11 +1,30 @@
-import { useState } from "react";
+import { addToCart } from "@/store/cartSlice";
+import { useRef, useState } from "react";
 import { TbCurrencyTaka, TbHeart, TbShoppingCart } from "react-icons/tb";
+import { useDispatch } from "react-redux";
 import Counter from "./Counter";
 import ProductGallery from "./ProductGallery";
 import ProductVariants from "./ProductVariants";
 
 function ProductPreview({ product }) {
   const [currentVariant, setCurrentVariant] = useState(null);
+  const productCount = useRef(0);
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    dispatch(
+      addToCart({
+        id: product.id,
+        title: product.title,
+        variant: currentVariant || product.variants[0],
+        count: productCount.current,
+      })
+    );
+  };
+
+  const handleProductCount = (count) => {
+    productCount.current = count;
+  };
 
   return (
     <div className="bg-gray-100 flex flex-wrap max-h-full overflow-y-auto">
@@ -37,8 +56,15 @@ function ProductPreview({ product }) {
           <button className="w-12 h-12 mr-2 text-2xl inline-flex justify-center items-center rounded-full text-accent bg-white shadow-lg hover:bg-accent hover:text-white">
             <TbHeart />
           </button>
-          <Counter className="bg-white p-2 rounded-l-full shadow-md" max={currentVariant?.quantityAvailable || 10} />
-          <button className="bg-accent text-white hover:bg-accent-dark border-l px-3 font-semibold rounded-r-full inline-flex items-center justify-center gap-2 shadow-md">
+          <Counter
+            className="bg-white p-2 rounded-l-full shadow-md"
+            max={currentVariant?.quantityAvailable || 10}
+            onCountChange={handleProductCount}
+          />
+          <button
+            onClick={handleAddToCart}
+            className="bg-accent text-white hover:bg-accent-dark border-l px-3 font-semibold rounded-r-full inline-flex items-center justify-center gap-2 shadow-md"
+          >
             <TbShoppingCart className="text-2xl" />
             Add To Cart
           </button>

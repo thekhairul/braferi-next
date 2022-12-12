@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import { TbMinus, TbPlus } from "react-icons/tb";
 
-function Counter({ max = 10, min = 1, value = 1, className = "", ...props }) {
+// TODO: validate props
+function Counter({ onCountChange, max = 10, min = 1, value = 1, className = "", ...props }) {
   const [count, setCount] = useState(value);
 
   useEffect(() => {
     if (count > max) setCount(max);
   }, [max]);
+
+  useEffect(() => {
+    if (onCountChange) onCountChange(count);
+  }, [count]);
 
   const handleCount = (val) => {
     if (val >= min && val <= max) {

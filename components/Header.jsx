@@ -1,3 +1,4 @@
+import Cart from "@/components/Cart";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useState } from "react";
@@ -26,7 +27,7 @@ function Header() {
       </div>
 
       <SidebarNoSSR appendTo="#sidebars" isOpen={isSidebarOpen} closeSidebar={closeSidebar}>
-        <p>Hi there</p>
+        <Cart />
       </SidebarNoSSR>
     </div>
   );
