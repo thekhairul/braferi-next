@@ -1,25 +1,96 @@
-import { addToCart } from "@/store/cartSlice";
+import gqlClient from "@/services/gqlClient";
+import { gql } from "graphql-request";
 import { useRef, useState } from "react";
-import { TbCurrencyTaka, TbHeart, TbShoppingCart } from "react-icons/tb";
-import { useDispatch } from "react-redux";
+import { BsFillCartPlusFill } from "react-icons/bs";
+import { TbCurrencyTaka, TbHeart } from "react-icons/tb";
+import { useMutation, useQueryClient } from "react-query";
+import { toast } from "react-toastify";
 import Counter from "./Counter";
 import ProductGallery from "./ProductGallery";
 import ProductVariants from "./ProductVariants";
 
+const addToCart = (product) => {
+  const { id: cartId } = JSON.parse(localStorage.getItem("braferi:shopify:cart"));
+  const mutationQuery = gql`
+    mutation AddToCart($cartId: ID!, $merchandiseId: ID!, $quantity: Int) {
+      cartLinesAdd(cartId: $cartId, lines: [{ quantity: $quantity, merchandiseId: $merchandiseId }]) {
+        cart {
+          lines(first: 100) {
+            edges {
+              node {
+                id
+                quantity
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                    product {
+                      title
+                    }
+                    image {
+                      url
+                    }
+                    priceV2 {
+                      amount
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  return gqlClient.request(mutationQuery, {
+    cartId,
+    merchandiseId: product.id,
+    quantity: product.count,
+  });
+};
+
 function ProductPreview({ product }) {
   const [currentVariant, setCurrentVariant] = useState(null);
   const productCount = useRef(0);
-  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+  const mutation = useMutation(addToCart, {
+    // When mutate is called:
+    onMutate: async (newProduct) => {
+      toast.success("Added", {
+        closeButton: false,
+        hideProgressBar: true,
+        theme: "colored",
+        autoClose: 1000,
+      });
+      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries("cart");
+
+      // Snapshot the previous value
+      const previousCart = queryClient.getQueryData("cart");
+
+      // Optimistically update to the new value
+      queryClient.setQueryData("cart", (old) => {
+        console.log("old", old);
+        return { ...old, newProduct };
+      });
+
+      // Return a context object with the snapshotted value
+      return { previousCart };
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData("cart", data);
+    },
+    // If the mutation fails, use the context returned from onMutate to roll back
+    onError: (err, newProduct, context) => {
+      queryClient.setQueryData("cart", context.previousCart);
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries("cart");
+    },
+  });
 
   const handleAddToCart = () => {
-    dispatch(
-      addToCart({
-        id: product.id,
-        title: product.title,
-        variant: currentVariant || product.variants[0],
-        count: productCount.current,
-      })
-    );
+    mutation.mutate({ ...currentVariant, count: +productCount.current });
   };
 
   const handleProductCount = (count) => {
@@ -65,7 +136,7 @@ function ProductPreview({ product }) {
             onClick={handleAddToCart}
             className="bg-accent text-white hover:bg-accent-dark border-l px-3 font-semibold rounded-r-full inline-flex items-center justify-center gap-2 shadow-md"
           >
-            <TbShoppingCart className="text-2xl" />
+            <BsFillCartPlusFill className="text-2xl" />
             Add To Cart
           </button>
         </div>

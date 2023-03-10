@@ -9,7 +9,7 @@ const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use((config) => {
-    config.headers['X-Shopify-Storefront-Access-Token'] = process.env.NEXT_PUBLIC_SHOPIFY_ACCESS_TOKEN
+    config.headers['X-Shopify-Storefront-Access-Token'] = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS
     return config;
 })
 

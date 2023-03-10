@@ -56,10 +56,7 @@ export default function Products() {
       }
     }
   `;
-  const { data, isLoading } = useQuery(
-    ["/products", productQuery],
-    getProducts
-  );
+  const { data, isLoading } = useQuery(["/products"], () => getProducts(productQuery));
   let products = [];
   if (data) products = flattenCollection(data.products.edges, true);
   console.log(products);

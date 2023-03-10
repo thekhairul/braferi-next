@@ -13,13 +13,13 @@ export const cartSlice = createSlice({
       state.products.push(action.payload);
     },
     removeFromCart(state, action) {
-      const toRemoveIndex = state.products.findIndex((product) => product.id === action.payload.id);
+      const toRemoveIndex = state.products.findIndex((product) => product.id === action.payload);
       if (toRemoveIndex >= 0) state.products.splice(toRemoveIndex, 1);
     },
     updateCartItem(state, action) {
       const productIndex = state.products.findIndex((product) => product.id === action.payload.id);
       const product = productIndex >= 0 ? state.products[productIndex] : null;
-      if (product) state.products[productIndex] = { ...product, ...action.payload.value };
+      if (product) state.products[productIndex] = { ...action.payload };
     },
   },
 });
