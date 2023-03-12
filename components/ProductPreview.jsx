@@ -69,7 +69,6 @@ function ProductPreview({ product }) {
 
       // Optimistically update to the new value
       queryClient.setQueryData("cart", (old) => {
-        console.log("old", old);
         return { ...old, newProduct };
       });
 

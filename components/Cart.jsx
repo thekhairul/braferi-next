@@ -7,14 +7,14 @@ function Cart({ data, checkoutUrl, updateCart, removeCart }) {
   console.log("cartData", data, checkoutUrl);
 
   const cartPrice = useMemo(() => {
-    if (!data) return 0;
+    if (!data?.length) return 0;
     return data.reduce((total, currentProduct) => {
       total += currentProduct.merchandise.priceV2.amount * currentProduct.quantity;
       return total;
     }, 0);
   }, [data]);
 
-  if (!data) return <p>Your cart is empty</p>;
+  if (!data?.length) return <p>Your cart is empty</p>;
 
   return (
     <div>
