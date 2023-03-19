@@ -1,11 +1,11 @@
 import Cart from "@/components/Cart";
 import { useRQmutation } from "@/hooks/RQmutation";
 import gqlClient from "@/services/gqlClient";
-import { createCartQuery, getCartQuery, removeCartQQuery, updateCartQuery } from "@/services/queries/cartQueries";
+import { createCartQuery, getCartQuery, removeCartQuery, updateCartQuery } from "@/services/queries/cartQueries";
 import { flattenCollection } from "@/utils/index";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { BsFillCartFill } from "react-icons/bs";
+import { BsHandbag } from "react-icons/bs";
 import { useQuery } from "react-query";
 
 const SidebarNoSSR = dynamic(() => import("@/components/Sidebar"), { ssr: false });
@@ -32,7 +32,7 @@ const updateCartLine = (line) => {
 
 const removeCartLine = (lineId) => {
   const { id: cartId } = JSON.parse(localStorage.getItem("braferi:shopify:cart"));
-  return gqlClient.request(removeCartQQuery, {
+  return gqlClient.request(removeCartQuery, {
     cartId,
     lineIds: [lineId],
   });
@@ -103,9 +103,9 @@ function CartRoot() {
   return (
     <>
       <button className="text-accent relative" onClick={() => setSidebarOpen(true)}>
-        <BsFillCartFill className="text-3xl" />
+        <BsHandbag className="text-3xl" />
         {cartData?.cart?.length ? (
-          <span className="absolute -top-2 -right-1 inline-flex justify-center items-center w-5 h-5 bg-brand text-white rounded-full">
+          <span className="absolute -top-2 -right-1 inline-flex justify-center items-center w-5 h-5 bg-brand text-white font-semibold shadow-md rounded-full">
             {cartData?.cart?.length}
           </span>
         ) : null}

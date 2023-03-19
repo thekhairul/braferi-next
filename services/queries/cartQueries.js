@@ -46,6 +46,37 @@ export const getCartQuery = gql`
   }
 `;
 
+export const addToCartQuery = gql`
+  mutation AddToCart($cartId: ID!, $merchandiseId: ID!, $quantity: Int) {
+    cartLinesAdd(cartId: $cartId, lines: [{ quantity: $quantity, merchandiseId: $merchandiseId }]) {
+      cart {
+        lines(first: 100) {
+          edges {
+            node {
+              id
+              quantity
+              merchandise {
+                ... on ProductVariant {
+                  id
+                  product {
+                    title
+                  }
+                  image {
+                    url
+                  }
+                  priceV2 {
+                    amount
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const updateCartQuery = gql`
   mutation UpdateCart($cartId: ID!, $lineId: ID!, $merchandiseId: ID!, $quantity: Int) {
     cartLinesUpdate(cartId: $cartId, lines: [{ id: $lineId, quantity: $quantity, merchandiseId: $merchandiseId }]) {
