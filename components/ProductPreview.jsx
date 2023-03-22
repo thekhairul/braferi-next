@@ -1,7 +1,7 @@
 import gqlClient from "@/services/gqlClient";
 import { addToCartQuery } from "@/services/queries/cartQueries";
 import { useRef, useState } from "react";
-import { BsFillCartPlusFill } from "react-icons/bs";
+import { BsBagPlus } from "react-icons/bs";
 import { TbCurrencyTaka, TbHeart } from "react-icons/tb";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
@@ -105,8 +105,8 @@ function ProductPreview({ product }) {
             onClick={handleAddToCart}
             className="bg-accent text-white hover:bg-accent-dark border-l px-3 font-semibold rounded-r-full inline-flex items-center justify-center gap-2 shadow-md"
           >
-            <BsFillCartPlusFill className="text-2xl" />
-            Add To Cart
+            <BsBagPlus className="text-2xl" />
+            Add To Bag
           </button>
         </div>
       </div>

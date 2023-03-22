@@ -1,5 +1,5 @@
 import gqlClient from "@/services/gqlClient";
-import { getProductsQuery } from "@/services/queries/productQueries";
+import { getProductsCollection } from "@/services/queries/productQueries";
 import { flattenCollection } from "@/utils/index";
 import { useQuery } from "react-query";
 import Product from "./Product";
@@ -10,11 +10,15 @@ export default function Products() {
     isLoading,
     isError,
   } = useQuery(["/products"], () =>
-    gqlClient.request(getProductsQuery).then((res) => {
-      return flattenCollection(res?.products?.edges || [], true);
-    })
+    gqlClient
+      .request(getProductsCollection, { filters: JSON.parse(localStorage.getItem("braferi:shopify:filters")) || [] })
+      .then((res) => {
+        return flattenCollection(res?.collection?.products?.edges || [], true);
+      })
   );
-  console.log(products);
+  
+  console.log("products", products);
+
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Failed!</p>;
 

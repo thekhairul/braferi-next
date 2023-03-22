@@ -8,11 +8,11 @@ function PriceRange({ minPrice = 0, maxPrice = 10000, priceGapLimit = 500, onCha
   const [maxPriceCurrent, setMaxPriceCurrent] = useState(maxPrice);
   const publishChange = useCallback(
     debounce((change) => onChange(change), 200),
-    [onChange]
+    []
   );
 
   useEffect(() => {
-    publishChange({ fromPrice: minPriceCurrent, toPrice: maxPriceCurrent });
+    publishChange({ min: minPriceCurrent, max: maxPriceCurrent });
   }, [minPriceCurrent, maxPriceCurrent, publishChange]);
 
   const priceRangeLeftGap = useMemo(() => {

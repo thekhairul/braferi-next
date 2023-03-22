@@ -49,7 +49,6 @@ function CartRoot() {
     ["cart"],
     () =>
       gqlClient.request(getCartQuery, { cartId }).then((res) => {
-        console.log("query cart");
         return {
           cart: flattenCollection(res?.cart?.lines?.edges || [], true),
           checkoutUrl: res?.cart?.checkoutUrl,

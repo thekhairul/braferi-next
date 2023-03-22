@@ -54,7 +54,7 @@ export const getProductsQuery = gql`
 
 export const getFiltersQuery = gql`
   query getFilters($handle: String = "frontpage") {
-    collectionv (handle: $handle) {
+    collection(handle: $handle) {
       products(first: 100) {
         filters {
           id
@@ -72,7 +72,7 @@ export const getFiltersQuery = gql`
   }
 `;
 
-export const filterProductsQuery = gql`
+export const getProductsCollection = gql`
   query filterProducts($handle: String = "frontpage", $filters: [ProductFilter!] = [{}]) {
     collection(handle: $handle) {
       products(first: 100, filters: $filters) {
