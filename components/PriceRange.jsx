@@ -1,9 +1,10 @@
 import { StyledPriceRangeBar, StyledPriceRangeInput } from "@/components/styles/priceRangeStyle";
 import { debounce } from "lodash";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { TbCurrencyTaka } from "react-icons/tb";
 
 function PriceRange({ minPrice = 0, maxPrice = 10000, priceGapLimit = 500, onChange = () => {} }) {
+  const mounted = useRef(false);
   const [minPriceCurrent, setMinPriceCurrent] = useState(minPrice);
   const [maxPriceCurrent, setMaxPriceCurrent] = useState(maxPrice);
   const publishChange = useCallback(
@@ -12,7 +13,11 @@ function PriceRange({ minPrice = 0, maxPrice = 10000, priceGapLimit = 500, onCha
   );
 
   useEffect(() => {
-    publishChange({ min: minPriceCurrent, max: maxPriceCurrent });
+    if (mounted.current) {
+      publishChange({ min: minPriceCurrent, max: maxPriceCurrent });
+    } else {
+      mounted.current = true;
+    }
   }, [minPriceCurrent, maxPriceCurrent, publishChange]);
 
   const priceRangeLeftGap = useMemo(() => {

@@ -36,7 +36,10 @@ function Filter() {
       const data = flattenCollection(res?.collection?.products?.edges || [], true);
       queryClient.setQueryData(["/products"], data);
     });
-    if (!filterInputs.length) setComponentId(nanoid());
+    if (!filterInputs.length) {
+      setComponentId(nanoid()); // force remount components
+      setFilters([]);
+    }
   };
 
   const handleFilters = (key, filterInput) => {
@@ -62,14 +65,14 @@ function Filter() {
   if (isError) return <p>Failed!</p>;
 
   return (
-    <div className="w-full shadow-lg rounded-md p-4" style={{ minHeight: "400px" }}>
+    <div className="w-full bg-white shadow-lg rounded-md p-4" style={{ minHeight: "400px" }}>
       <div className="flex items-center gap-2 border-b border-gray-200 py-2 mb-4">
         <h3 className="flex-grow inline-flex items-center gap-2">
           <FiFilter />
           <span>Filter</span>
         </h3>
         <button
-          className="inline-flex items-center gap-2 px-3 py-2 bg-brand text-white rounded-lg"
+          className="inline-flex items-center gap-2 px-3 py-2 bg-brand hover:bg-brand-dark text-white rounded-lg"
           disabled={!filters.length}
           onClick={() => filterProducts([])}
         >
