@@ -1,4 +1,5 @@
 import Checkbox from "@/components/Checkbox";
+import Loader from "@/components/Loader";
 import PriceRange from "@/components/PriceRange";
 import Radio from "@/components/Radio";
 import gqlClient from "@/services/gqlClient";
@@ -61,7 +62,7 @@ function Filter() {
 
   console.log("filters", filters);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loader />;
   if (isError) return <p>Failed!</p>;
 
   return (

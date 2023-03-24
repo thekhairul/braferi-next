@@ -12,15 +12,14 @@ function SearchBar() {
   const handleSearch = useCallback(
     debounce((e) => {
       const { value } = e.target;
-      if (!value.trim()) return;
       const query = ["title", "tag", "product_type", "vendor"].map((category) => {
-        return `(${category}=${value}*)`;
+        return `(${category}:${value}*)`;
       });
-      gqlClient.request(getProductsQuery, { query: query.join(" OR ") }).then((res) => {
+      gqlClient.request(getProductsQuery, { query: value.trim() ? query.join(" OR ") : "" }).then((res) => {
         const data = flattenCollection(res?.products?.edges || [], true);
         queryClient.setQueryData(["/products"], data);
       });
-    }, 200),
+    }, 500),
     []
   );
 
@@ -33,6 +32,7 @@ function SearchBar() {
           placeholder="Search..."
           className="p-2 pl-0 w-full border-b border-gray-200 focus:outline-none focus:border-accent"
           onInput={handleSearch}
+          onKeyUp={(e) => e.key === "Enter" && handleSearch(e)}
         />
       </div>
     </div>
