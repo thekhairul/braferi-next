@@ -22,7 +22,6 @@ function Radio({ variant = "tick", options = [], name = "radio", onChange = () =
   };
 
   const handleInput = (e) => {
-    console.log(e.target.value, selected);
     if (selected === e.target.value) setSelected("");
     else setSelected(e.target.value);
   };

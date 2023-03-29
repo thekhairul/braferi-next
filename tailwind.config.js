@@ -5,10 +5,10 @@ module.exports = {
       colors: {
         light: "#ffffff",
         dark: "#374151",
-        brand: "#DB7D76",
+        brand: "#E35B64",
         "brand-dark": "#c5706a",
-        accent: "#7C3AEF",
-        "accent-dark": "#5B21B6",
+        accent: "#2F3132",
+        "accent-dark": "#000000",
       },
       fontFamily: {
         heading: ["Lora", "serif"],

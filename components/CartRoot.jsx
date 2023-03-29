@@ -88,7 +88,6 @@ function CartRoot() {
       gqlClient
         .request(getCartQuery, { cartId: id })
         .then((res) => {
-          console.log("cart0", res);
           setCartId(id);
         })
         .catch((err) => {

@@ -3,6 +3,12 @@ import { gql } from "graphql-request";
 export const getProductsQuery = gql`
   query productsQuery($query: String = "") {
     products(first: 100, query: $query) {
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
+        startCursor
+        endCursor
+      }
       edges {
         node {
           id
@@ -73,9 +79,15 @@ export const getFiltersQuery = gql`
 `;
 
 export const getProductsCollection = gql`
-  query filterProducts($handle: String = "frontpage", $filters: [ProductFilter!] = [{}]) {
+  query filterProducts($handle: String = "frontpage", $filters: [ProductFilter!] = [{}], $cursor: String) {
     collection(handle: $handle) {
-      products(first: 100, filters: $filters) {
+      products(first: 5, filters: $filters, after: $cursor) {
+        pageInfo {
+          hasPreviousPage
+          hasNextPage
+          startCursor
+          endCursor
+        }
         edges {
           node {
             id

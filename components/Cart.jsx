@@ -4,8 +4,6 @@ import { BsFillBagCheckFill } from "react-icons/bs";
 import { TbCurrencyTaka, TbTrash } from "react-icons/tb";
 
 function Cart({ data, checkoutUrl, updateCart, removeCart }) {
-  console.log("cartData", data, checkoutUrl);
-
   const cartPrice = useMemo(() => {
     if (!data?.length) return 0;
     return data.reduce((total, currentProduct) => {

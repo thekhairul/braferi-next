@@ -3,40 +3,41 @@ import Loader from "@/components/Loader";
 import PriceRange from "@/components/PriceRange";
 import Radio from "@/components/Radio";
 import gqlClient from "@/services/gqlClient";
-import { getFiltersQuery, getProductsCollection } from "@/services/queries/productQueries";
-import { flattenCollection } from "@/utils/index";
+import { getFiltersQuery } from "@/services/queries/productQueries";
+import { setProductFilters } from "@/store/productSlice";
 import { nanoid } from "nanoid";
 import { useMemo, useState } from "react";
 import { FiCheck, FiFilter } from "react-icons/fi";
 import { TbTrash } from "react-icons/tb";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
+import { useDispatch } from "react-redux";
 
 function Filter() {
-  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
   const [filters, setFilters] = useState([]);
   const [componentId, setComponentId] = useState(nanoid());
 
   const {
     data: filterList,
     isLoading,
+    isFetching,
     isError,
-  } = useQuery(["/filters"], () =>
-    gqlClient.request(getFiltersQuery).then((res) => {
-      const filters = res?.collection?.products?.filters;
-      if (!filters) return [];
-      return filters.reduce((set, filter) => {
-        set[filter.label] = filter.values.map(({ label, input, count }) => ({ label, input, count }));
-        return set;
-      }, {});
-    })
+  } = useQuery(
+    ["/filters"],
+    () =>
+      gqlClient.request(getFiltersQuery).then((res) => {
+        const filters = res?.collection?.products?.filters;
+        if (!filters) return {};
+        return filters.reduce((set, filter) => {
+          set[filter.label] = filter.values.map(({ label, input, count }) => ({ label, input, count }));
+          return set;
+        }, {});
+      }),
+    { refetchOnWindowFocus: false }
   );
 
   const filterProducts = (filterInputs) => {
-    localStorage.setItem("braferi:shopify:filters", JSON.stringify(filterInputs));
-    gqlClient.request(getProductsCollection, { filters: filterInputs }).then((res) => {
-      const data = flattenCollection(res?.collection?.products?.edges || [], true);
-      queryClient.setQueryData(["/products"], data);
-    });
+    dispatch(setProductFilters(filterInputs));
     if (!filterInputs.length) {
       setComponentId(nanoid()); // force remount components
       setFilters([]);
@@ -60,10 +61,8 @@ function Filter() {
     return {};
   }, [filterList]);
 
-  console.log("filters", filters);
-
-  if (isLoading) return <Loader />;
-  if (isError) return <p>Failed!</p>;
+  if (isLoading || isFetching) return <Loader />;
+  if (isError || !Object.keys(filterList || {}).length) return <Loader type="error" />;
 
   return (
     <div className="w-full bg-white shadow-lg rounded-md p-4" style={{ minHeight: "400px" }}>
@@ -103,7 +102,7 @@ function Filter() {
         <Checkbox key={componentId} className="w-full" onChange={(isChecked) => handleFilters("available", isChecked)}>
           In Stock
         </Checkbox>
-        <Checkbox className="w-full" onChange={(val) => console.log("onSale", val)}>
+        <Checkbox className="w-full" onChange={(val) => {}}>
           On Sale
         </Checkbox>
       </div>

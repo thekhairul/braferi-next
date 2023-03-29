@@ -22,7 +22,7 @@ function Product({ product }) {
             </span>
           </p>
           <button
-            className="bg-accent hover:bg-accent-dark focus:outline-none text-white px-6 py-3 rounded-full inline-flex justify-center items-center gap-2"
+            className="bg-accent hover:bg-accent-dark focus:outline-none text-white px-6 py-3 rounded-lg inline-flex justify-center items-center gap-2"
             onClick={() => setQuickView(true)}
           >
             <FiEye className="font-bold" />

@@ -1,19 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  currentProduct: null,
+  filters: [],
 };
 
 export const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    setCurrentProduct(state, action) {
-      state.currentProduct = action.payload;
+    setProductFilters(state, action) {
+      state.filters = action.payload;
     },
   },
 });
 
-export const { setCurrentProduct } = productSlice.actions;
+export const { setProductFilters } = productSlice.actions;
 
 export default productSlice.reducer;
