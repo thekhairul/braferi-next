@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useInfiniteQuery } from "react-query";
 import { useSelector } from "react-redux";
 
-export default function Products() {
+export default function Products({ initialData }) {
   const filters = useSelector((store) => store.products.filters);
   const {
     data: products,
@@ -29,6 +29,7 @@ export default function Products() {
         .then((res) => res.collection.products);
     },
     {
+      initialData,
       refetchOnWindowFocus: false,
       getNextPageParam: (lastPage) => {
         if (lastPage?.pageInfo?.hasNextPage) return lastPage.pageInfo.endCursor;

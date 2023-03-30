@@ -1,9 +1,11 @@
-import Modal from "@/components/Modal";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { FiEye } from "react-icons/fi";
 import { GrClose } from "react-icons/gr";
 import { TbCurrencyTaka } from "react-icons/tb";
-import ProductPreview from "./ProductPreview";
+
+const Modal = dynamic(() => import("@/components/Modal"), { ssr: false });
+const ProductPreview = dynamic(() => import("@/components/ProductPreview"), { ssr: false });
 
 function Product({ product }) {
   const [isQuickViewOpen, setQuickView] = useState(false);
