@@ -100,10 +100,10 @@ function CartRoot() {
 
   return (
     <>
-      <button className="text-accent relative" onClick={() => setSidebarOpen(true)}>
+      <button className="text-accent relative p-2 hover:shadow-lg rounded-lg" onClick={() => setSidebarOpen(true)}>
         <BsHandbag className="text-3xl" />
         {cartData?.cart?.length ? (
-          <span className="absolute -top-2 -right-1 inline-flex justify-center items-center w-5 h-5 bg-brand text-white font-semibold shadow-md rounded-full">
+          <span className="absolute -top-0 -right-1 inline-flex justify-center items-center w-5 h-5 bg-brand text-white font-semibold shadow-md rounded-full">
             {cartData?.cart?.length}
           </span>
         ) : null}

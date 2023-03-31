@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 
-function Sidebar({ children, appendTo, isOpen, closeSidebar }) {
+function Sidebar({ children, appendTo, isOpen, closeSidebar, position = "end" }) {
   const sidebarContainer = document.querySelector(appendTo);
 
   useEffect(() => {
@@ -22,13 +22,13 @@ function Sidebar({ children, appendTo, isOpen, closeSidebar }) {
 
   return createPortal(
     <div
-      className="sidebar fixed inset-0 h-screen flex justify-end"
+      className={`sidebar fixed inset-0 h-screen flex justify-${position}`}
       style={{ background: "rgba(0,0,0,0.7)" }}
       onClick={closeSidebarOnOverlayClick}
     >
       <motion.div
         className="w-80 max-w-xs h-full bg-white"
-        initial={{ translateX: "100%" }}
+        initial={{ translateX: position === "end" ? "100%" : "-100%" }}
         animate={{ translateX: "0px" }}
         transition={{ duration: 0.3 }}
       >

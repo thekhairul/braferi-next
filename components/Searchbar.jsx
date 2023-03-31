@@ -1,6 +1,5 @@
 import gqlClient from "@/services/gqlClient";
 import { getProductsQuery } from "@/services/queries/productQueries";
-import { flattenCollection } from "@/utils/index";
 import { debounce } from "lodash";
 import { useCallback } from "react";
 import { TbSearch } from "react-icons/tb";
@@ -16,8 +15,7 @@ function SearchBar() {
         return `(${category}:${value}*)`;
       });
       gqlClient.request(getProductsQuery, { query: value.trim() ? query.join(" OR ") : "" }).then((res) => {
-        const data = flattenCollection(res?.products?.edges || [], true);
-        queryClient.setQueryData(["/products"], data);
+        queryClient.setQueryData(["/products"], { pages: [res?.products] });
       });
     }, 500),
     []
