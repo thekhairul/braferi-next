@@ -18,14 +18,12 @@ function Sidebar({ children, appendTo, isOpen, closeSidebar, position = "end" })
     if (e.target === e.currentTarget) closeSidebar();
   };
 
+  const classes = `sidebar fixed inset-0 h-screen flex ${position === "end" ? "justify-end" : "justify-start"}`;
+
   if (!isOpen) return null;
 
   return createPortal(
-    <div
-      className={`sidebar fixed inset-0 h-screen flex justify-${position}`}
-      style={{ background: "rgba(0,0,0,0.7)" }}
-      onClick={closeSidebarOnOverlayClick}
-    >
+    <div className={classes} style={{ background: "rgba(0,0,0,0.7)" }} onClick={closeSidebarOnOverlayClick}>
       <motion.div
         className="w-80 max-w-xs h-full bg-white"
         initial={{ translateX: position === "end" ? "100%" : "-100%" }}

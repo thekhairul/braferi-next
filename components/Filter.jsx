@@ -12,7 +12,7 @@ import { TbTrash } from "react-icons/tb";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 
-function Filter() {
+function Filter({ initialData }) {
   const dispatch = useDispatch();
   const [filters, setFilters] = useState([]);
   const [componentId, setComponentId] = useState(nanoid());
@@ -24,16 +24,22 @@ function Filter() {
     isError,
   } = useQuery(
     ["/filters"],
-    () =>
-      gqlClient.request(getFiltersQuery).then((res) => {
-        const filters = res?.collection?.products?.filters;
-        if (!filters) return {};
-        return filters.reduce((set, filter) => {
+    () => {
+      return gqlClient.request(getFiltersQuery).then((res) => {
+        return res?.collection?.products?.filters;
+      });
+    },
+    {
+      refetchOnWindowFocus: false,
+      initialData,
+      select: (data) => {
+        if (!data) return {};
+        return data.reduce((set, filter) => {
           set[filter.label] = filter.values.map(({ label, input, count }) => ({ label, input, count }));
           return set;
         }, {});
-      }),
-    { refetchOnWindowFocus: false }
+      },
+    }
   );
 
   const filterProducts = (filterInputs) => {
@@ -61,7 +67,7 @@ function Filter() {
     return {};
   }, [filterList]);
 
-  if (isLoading || isFetching) return <Loader />;
+  if (isLoading) return <Loader />;
   if (isError || !Object.keys(filterList || {}).length) return <Loader type="error" />;
 
   return (
