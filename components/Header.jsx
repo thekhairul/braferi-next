@@ -34,14 +34,16 @@ function Header() {
                   <FiFilter className="text-3xl" />
                 </button>
               )}
-              <SidebarNoSSR
-                position="start"
-                appendTo="#sidebars"
-                isOpen={isFilterOpen}
-                closeSidebar={() => toggleFilters(false)}
-              >
-                <Filter />
-              </SidebarNoSSR>
+              {isFilterOpen && (
+                <SidebarNoSSR
+                  position="start"
+                  appendTo="#sidebars"
+                  isOpen={isFilterOpen}
+                  closeSidebar={() => toggleFilters(false)}
+                >
+                  <Filter />
+                </SidebarNoSSR>
+              )}
             </li>
             <li>
               <CartRoot />

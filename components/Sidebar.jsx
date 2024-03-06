@@ -1,24 +1,32 @@
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 
 function Sidebar({ children, appendTo, isOpen, closeSidebar, position = "end" }) {
   const sidebarContainer = document.querySelector(appendTo);
 
+  const close = useCallback(() => {
+    document.body.style.overflowY = "auto";
+    closeSidebar();
+  }, [closeSidebar]);
+
   useEffect(() => {
-    const closeOnEscapeKey = (e) => (e.key === "Escape" ? closeSidebar() : null);
+    const closeOnEscapeKey = (e) => (e.key === "Escape" ? close() : null);
     document.body.addEventListener("keydown", closeOnEscapeKey);
+    document.body.style.overflowY = isOpen ? "hidden" : "auto";
     return () => {
       document.body.removeEventListener("keydown", closeOnEscapeKey);
     };
-  }, [closeSidebar]);
+  }, [close, isOpen]);
 
   const closeSidebarOnOverlayClick = (e) => {
     e.stopPropagation();
-    if (e.target === e.currentTarget) closeSidebar();
+    if (e.target === e.currentTarget) close();
   };
 
-  const classes = `sidebar fixed inset-0 h-screen flex ${position === "end" ? "justify-end" : "justify-start"}`;
+  const classes = `sidebar fixed inset-0 h-screen overflow-x-hidden overflow-y-auto flex ${
+    position === "end" ? "justify-end" : "justify-start"
+  }`;
 
   if (!isOpen) return null;
 

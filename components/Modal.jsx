@@ -1,21 +1,27 @@
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 
 function Modal({ children, appendTo, isOpen, closeModal }) {
   const modalContainer = document.querySelector(appendTo);
 
+  const close = useCallback(() => {
+    document.body.style.overflowY = "auto";
+    closeModal();
+  }, [closeModal]);
+
   useEffect(() => {
-    const closeOnEscapeKey = (e) => (e.key === "Escape" ? closeModal() : null);
+    const closeOnEscapeKey = (e) => (e.key === "Escape" ? close() : null);
     document.body.addEventListener("keydown", closeOnEscapeKey);
+    document.body.style.overflowY = isOpen ? "hidden" : "auto";
     return () => {
       document.body.removeEventListener("keydown", closeOnEscapeKey);
     };
-  }, [closeModal]);
+  }, [close, isOpen]);
 
   const closeModalOnOverlayClick = (e) => {
     e.stopPropagation();
-    if (e.target === e.currentTarget) closeModal();
+    if (e.target === e.currentTarget) close();
   };
 
   if (!isOpen) return null;

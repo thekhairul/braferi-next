@@ -39,7 +39,7 @@ const removeCartLine = (lineId) => {
 };
 
 function CartRoot() {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isCartOpen, setCartOpen] = useState(false);
   const [cartId, setCartId] = useState(null);
   const {
     isLoading,
@@ -80,7 +80,7 @@ function CartRoot() {
     cartRemoveMutation.mutate(lineId);
   };
 
-  const closeSidebar = () => setSidebarOpen(false);
+  const closeSidebar = () => setCartOpen(false);
 
   useEffect(() => {
     if (localStorage.getItem("braferi:shopify:cart")) {
@@ -100,7 +100,7 @@ function CartRoot() {
 
   return (
     <>
-      <button className="text-accent relative p-2 hover:shadow-lg rounded-lg" onClick={() => setSidebarOpen(true)}>
+      <button className="text-accent relative p-2 hover:shadow-lg rounded-lg" onClick={() => setCartOpen(true)}>
         <BsHandbag className="text-3xl" />
         {cartData?.cart?.length ? (
           <span className="absolute -top-0 -right-1 inline-flex justify-center items-center w-5 h-5 bg-brand text-white font-semibold shadow-md rounded-full">
@@ -109,14 +109,16 @@ function CartRoot() {
         ) : null}
       </button>
 
-      <SidebarNoSSR appendTo="#sidebars" isOpen={isSidebarOpen} closeSidebar={closeSidebar}>
-        <Cart
-          data={cartData?.cart}
-          checkoutUrl={cartData?.checkoutUrl}
-          updateCart={handleCartUpdate}
-          removeCart={handleCartRemove}
-        />
-      </SidebarNoSSR>
+      {isCartOpen && (
+        <SidebarNoSSR appendTo="#sidebars" isOpen={isCartOpen} closeSidebar={closeSidebar}>
+          <Cart
+            data={cartData?.cart}
+            checkoutUrl={cartData?.checkoutUrl}
+            updateCart={handleCartUpdate}
+            removeCart={handleCartRemove}
+          />
+        </SidebarNoSSR>
+      )}
     </>
   );
 }
