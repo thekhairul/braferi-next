@@ -1,29 +1,23 @@
 import { StyledRadioLabel } from "@/components/styles/radioStyle";
 import { nanoid } from "nanoid";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import { MdCheckBox, MdCheckBoxOutlineBlank } from "react-icons/md";
 
-function Radio({ variant = "tick", options = [], name = "radio", onChange = () => {}, ...props }) {
+function Radio({ variant = "tick", selected = "", options = [], name = "radio", onChange = () => {}, ...props }) {
   const idRef = useRef(nanoid());
-  const [selected, setSelected] = useState("");
-
-  useEffect(() => {
-    onChange(selected);
-  }, [selected]);
-
   const formattedOptions = useMemo(() => {
     if (options.every((option) => typeof option === "object")) return options;
-    return options.map((option) => ({ label: option }));
+    return options.map((option) => ({ label: option, value: option }));
   }, [options]);
 
-  const tick = (option) => {
+  const tick = (value) => {
     if (variant !== "tick") return null;
-    return selected === option ? <MdCheckBox className="text-accent" /> : <MdCheckBoxOutlineBlank />;
+    return selected === value ? <MdCheckBox className="text-accent" /> : <MdCheckBoxOutlineBlank />;
   };
 
   const handleInput = (e) => {
-    if (selected === e.target.value) setSelected("");
-    else setSelected(e.target.value);
+    if (selected === e.target.value) onChange("");
+    else onChange(e.target.value);
   };
 
   return (
@@ -33,10 +27,10 @@ function Radio({ variant = "tick", options = [], name = "radio", onChange = () =
           htmlFor={`${option.label}-${idRef.current}`}
           key={option.label}
           variant={variant}
-          isSelected={selected === option.label}
+          isSelected={selected === option.value}
         >
           <span className="inline-flex items-center gap-1">
-            {tick(option.label)}
+            {tick(option.value)}
             {option.label}
           </span>
           <input
@@ -44,7 +38,7 @@ function Radio({ variant = "tick", options = [], name = "radio", onChange = () =
             type="radio"
             id={`${option.label}-${idRef.current}`}
             name={`${name}-${idRef.current}`}
-            value={option.label}
+            value={option.value}
             onClick={handleInput}
           />
         </StyledRadioLabel>

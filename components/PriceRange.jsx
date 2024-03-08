@@ -1,53 +1,36 @@
 import { StyledPriceRangeBar, StyledPriceRangeInput } from "@/components/styles/priceRangeStyle";
-import { debounce } from "lodash";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useMemo } from "react";
 import { TbCurrencyTaka } from "react-icons/tb";
 
-function PriceRange({ minPrice = 0, maxPrice = 10000, priceGapLimit = 500, onChange = () => {} }) {
-  const mounted = useRef(false);
-  const [minPriceCurrent, setMinPriceCurrent] = useState(minPrice);
-  const [maxPriceCurrent, setMaxPriceCurrent] = useState(maxPrice);
-  const publishChange = useCallback(
-    debounce((change) => onChange(change), 200),
-    []
-  );
-
-  useEffect(() => {
-    if (mounted.current) {
-      publishChange({ min: minPriceCurrent, max: maxPriceCurrent });
-    } else {
-      mounted.current = true;
-    }
-  }, [minPriceCurrent, maxPriceCurrent, publishChange]);
-
+function PriceRange({ min = 0, max = 10000, minCurrent, maxCurrent, priceGapLimit = 500, onChange = () => {} }) {
   const priceRangeLeftGap = useMemo(() => {
-    const gapPercentage = (minPriceCurrent * 100) / (maxPrice - minPrice);
+    const gapPercentage = (minCurrent * 100) / (max - min);
     return `${gapPercentage}%`;
-  }, [minPriceCurrent, minPrice, maxPrice]);
+  }, [minCurrent, min, max]);
 
   const priceRangeRightGap = useMemo(() => {
-    const gapPercentage = (maxPriceCurrent * 100) / (maxPrice - minPrice);
+    const gapPercentage = (maxCurrent * 100) / (max - min);
     return `${100 - gapPercentage}%`;
-  }, [maxPriceCurrent, minPrice, maxPrice]);
+  }, [maxCurrent, min, max]);
 
   const handleMinPrice = (e) => {
     const value = parseInt(e.target.value, 10);
-    if (value <= maxPriceCurrent - priceGapLimit) setMinPriceCurrent(value);
+    if (value <= maxCurrent - priceGapLimit) onChange({ min: value, max: maxCurrent });
   };
 
   const handleMaxPrice = (e) => {
     const value = parseInt(e.target.value, 10);
-    if (value >= minPriceCurrent + priceGapLimit) setMaxPriceCurrent(value);
+    if (value >= minCurrent + priceGapLimit) onChange({ min: minCurrent, max: value });
   };
 
   return (
     <div className="pt-4 pb-6">
       <div className="flex justify-between items-center gap-4">
         <span className="inline-flex items-center">
-          From: {minPriceCurrent} <TbCurrencyTaka />
+          From: {minCurrent} <TbCurrencyTaka />
         </span>
         <span className="inline-flex items-center">
-          To: {maxPriceCurrent} <TbCurrencyTaka />
+          To: {maxCurrent} <TbCurrencyTaka />
         </span>
       </div>
       <div className="relative my-2">
@@ -56,18 +39,18 @@ function PriceRange({ minPrice = 0, maxPrice = 10000, priceGapLimit = 500, onCha
         <StyledPriceRangeInput
           className="absolute inset-0 w-full h-1"
           type="range"
-          min={minPrice}
-          max={maxPrice}
-          value={minPriceCurrent}
+          min={min}
+          max={max}
+          value={minCurrent}
           step="100"
           onInput={handleMinPrice}
         ></StyledPriceRangeInput>
         <StyledPriceRangeInput
           className="absolute inset-0 w-full h-1"
           type="range"
-          min={minPrice}
-          max={maxPrice}
-          value={maxPriceCurrent}
+          min={min}
+          max={max}
+          value={maxCurrent}
           step="100"
           onInput={handleMaxPrice}
         ></StyledPriceRangeInput>

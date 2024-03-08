@@ -1,14 +1,9 @@
 import { nanoid } from "nanoid";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { MdCheckBox, MdCheckBoxOutlineBlank } from "react-icons/md";
 
-function Checkbox({ checked = false, onChange, className, ...props }) {
-  const [isChecked, setIsChecked] = useState(checked);
+function Checkbox({ value = false, onChange, className, ...props }) {
   const idRef = useRef(nanoid());
-
-  useEffect(() => {
-    onChange(isChecked);
-  }, [isChecked]);
 
   return (
     <label
@@ -16,13 +11,13 @@ function Checkbox({ checked = false, onChange, className, ...props }) {
       className={`inline-flex items-center gap-2 cursor-pointer ${className || ""}`}
       {...props}
     >
-      {isChecked ? <MdCheckBox className="text-accent" /> : <MdCheckBoxOutlineBlank />}
+      {value ? <MdCheckBox className="text-accent" /> : <MdCheckBoxOutlineBlank />}
       <input
         id={`checkbox-${idRef.current}`}
         type="checkbox"
         hidden
-        checked={isChecked}
-        onChange={(e) => setIsChecked(e.target.checked)}
+        checked={value}
+        onChange={(e) => onChange(e.target.checked)}
       />
       {props.children}
     </label>

@@ -57,6 +57,7 @@ function CartRoot() {
     {
       keepPreviousData: true,
       enabled: Boolean(cartId),
+      refetchOnWindowFocus: false,
     }
   );
 

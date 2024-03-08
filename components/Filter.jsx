@@ -4,19 +4,18 @@ import PriceRange from "@/components/PriceRange";
 import Radio from "@/components/Radio";
 import gqlClient from "@/services/gqlClient";
 import { getFiltersQuery } from "@/services/queries/productQueries";
-import { setProductFilters } from "@/store/productSlice";
-import { nanoid } from "nanoid";
-import { useMemo, useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FiCheck, FiFilter } from "react-icons/fi";
 import { TbTrash } from "react-icons/tb";
 import { useQuery } from "react-query";
-import { useDispatch } from "react-redux";
 
 function Filter({ initialData }) {
-  const dispatch = useDispatch();
+  const router = useRouter();
+  const filtersFromURL = router.query.filters;
+  const [cumulatedFilters, setCumulatedFilters] = useState({});
   const [filters, setFilters] = useState([]);
-  const [componentId, setComponentId] = useState(nanoid());
-
+  const hasUsedFilters = useRef(false);
   const {
     data: filterList,
     isLoading,
@@ -35,18 +34,28 @@ function Filter({ initialData }) {
       select: (data) => {
         if (!data) return {};
         return data.reduce((set, filter) => {
-          set[filter.label] = filter.values.map(({ label, input, count }) => ({ label, input, count }));
+          set[filter.label] = filter.values.map(({ label, input, count }) => ({ label, input, count, value: label }));
           return set;
         }, {});
       },
     }
   );
 
+  useEffect(() => {
+    let parsedFilters = filters;
+    if (filters.length) hasUsedFilters.current = true;
+    if (filtersFromURL && !hasUsedFilters.current) parsedFilters = JSON.parse(filtersFromURL);
+    setCumulatedFilters(parsedFilters.reduce((set, filter) => ({ ...set, ...filter }), {}));
+  }, [filtersFromURL, filters]);
+
   const filterProducts = (filterInputs) => {
-    dispatch(setProductFilters(filterInputs));
+    const { pathname, query } = router;
     if (!filterInputs.length) {
-      setComponentId(nanoid()); // force remount components
+      delete router.query.filters;
+      router.replace({ pathname, query }, undefined, { shallow: true });
       setFilters([]);
+    } else {
+      router.replace({ pathname, query: { ...query, filters: JSON.stringify(filterInputs) } });
     }
   };
 
@@ -79,7 +88,7 @@ function Filter({ initialData }) {
         </h3>
         <button
           className="inline-flex items-center gap-2 px-3 py-2 bg-brand hover:bg-brand-dark text-white rounded-lg"
-          disabled={!filters.length}
+          disabled={!Object.keys(cumulatedFilters).length}
           onClick={() => filterProducts([])}
         >
           <TbTrash />
@@ -97,15 +106,20 @@ function Filter({ initialData }) {
         <div className="border-b border-gray-200">
           <h4 className="font-semibold uppercase mb-4">Price</h4>
           <PriceRange
-            key={componentId}
-            minPrice={parsedPrice.min}
-            maxPrice={parsedPrice.max}
+            min={parsedPrice.min}
+            max={parsedPrice.max}
+            minCurrent={cumulatedFilters.price?.min || parsedPrice.min}
+            maxCurrent={cumulatedFilters.price?.max || parsedPrice.max}
             onChange={({ min, max }) => handleFilters("price", { min, max })}
           />
         </div>
       )}
       <div className="py-4 border-b border-gray-200">
-        <Checkbox key={componentId} className="w-full" onChange={(isChecked) => handleFilters("available", isChecked)}>
+        <Checkbox
+          className="w-full"
+          value={cumulatedFilters.available}
+          onChange={(isChecked) => handleFilters("available", isChecked)}
+        >
           In Stock
         </Checkbox>
         <Checkbox className="w-full" onChange={(val) => {}}>
@@ -116,10 +130,10 @@ function Filter({ initialData }) {
         <div className="py-4 border-b border-gray-200">
           <h4 className="font-semibold uppercase mb-4">Brands</h4>
           <Radio
-            key={componentId}
             name="brands"
             variant="box"
             options={filterList.Brand}
+            selected={cumulatedFilters.productVendor}
             onChange={(brand) => handleFilters("productVendor", brand)}
           />
         </div>
@@ -128,9 +142,9 @@ function Filter({ initialData }) {
         <div className="py-4 border-b border-gray-200">
           <h4 className="font-semibold uppercase mb-4">Product Type</h4>
           <Radio
-            key={componentId}
             name="productType"
             options={filterList["Product type"]}
+            selected={cumulatedFilters.productType}
             onChange={(type) => handleFilters("productType", type)}
           />
         </div>
@@ -139,10 +153,10 @@ function Filter({ initialData }) {
         <div className="py-4 border-b border-gray-200">
           <h4 className="font-semibold uppercase mb-4">Size</h4>
           <Radio
-            key={componentId}
             name="size"
             variant="circle"
             options={filterList.Size}
+            selected={cumulatedFilters.variantOption?.value}
             onChange={(value) => handleFilters("variantOption", (value && { name: "size", value }) || null)}
           />
         </div>
@@ -151,10 +165,10 @@ function Filter({ initialData }) {
         <div className="py-4 border-opacity-100">
           <h4 className="font-semibold uppercase mb-4">More Filters</h4>
           <Radio
-            key={componentId}
             name="tag"
             variant="box"
             options={filterList["More filters"]}
+            selected={cumulatedFilters.tag}
             onChange={(tag) => handleFilters("tag", tag)}
           />
         </div>

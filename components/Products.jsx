@@ -4,12 +4,12 @@ import Product from "@/components/Product";
 import gqlClient from "@/services/gqlClient";
 import { getProductsCollection } from "@/services/queries/productQueries";
 import { flattenCollection } from "@/utils/index";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useInfiniteQuery } from "react-query";
-import { useSelector } from "react-redux";
 
 export default function Products({ initialData }) {
-  const filters = useSelector((store) => store.products.filters);
+  const { query } = useRouter();
   const {
     data: products,
     isLoading,
@@ -24,12 +24,13 @@ export default function Products({ initialData }) {
       return gqlClient
         .request(getProductsCollection, {
           cursor,
-          filters,
+          filters: JSON.parse(query.filters || "[]"),
         })
         .then((res) => res.collection.products);
     },
     {
       initialData,
+      enabled: !!query,
       refetchOnWindowFocus: false,
       getNextPageParam: (lastPage) => {
         if (lastPage?.pageInfo?.hasNextPage) return lastPage.pageInfo.endCursor;
@@ -50,7 +51,7 @@ export default function Products({ initialData }) {
   useEffect(() => {
     remove();
     refetch();
-  }, [filters]);
+  }, [query.filters]);
 
   if (isLoading) return <Loader />;
   if (isError || !products?.pages?.length) return <Loader type="error" />;
