@@ -15,7 +15,7 @@ function Product({ product }) {
   return (
     <div className="rounded-md overflow-hidden bg-white shadow-md mb-6 break-inside-avoid-column">
       <Link href={`products/${product.handle}`}>
-        <img src={product.featuredImage.url} alt={product.title} />
+        <img src={product.featuredImage.url} alt={product.title} className="cursor-pointer" />
       </Link>
       <div className="p-4">
         <h3 className="font-semibold text-md text-dark py-2 mb-4">{product.title}</h3>

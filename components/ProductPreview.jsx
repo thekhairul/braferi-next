@@ -18,7 +18,7 @@ const addToCart = (product) => {
   });
 };
 
-function ProductPreview({ product }) {
+function ProductPreview({ product, isQuickPreview = true }) {
   const [currentVariant, setCurrentVariant] = useState(null);
   const productCount = useRef(0);
   const queryClient = useQueryClient();
@@ -67,8 +67,8 @@ function ProductPreview({ product }) {
   };
 
   return (
-    <div className="bg-gray-100 flex flex-wrap max-h-full overflow-y-auto">
-      <div className="w-full md:w-1/2">
+    <div className="bg-gray-100 flex flex-wrap items-center max-h-full overflow-y-auto">
+      <div className={`w-full md:w-1/2 ${isQuickPreview ? "" : "rounded-md overflow-hidden"}`}>
         <ProductGallery images={product.images} goToImgId={currentVariant?.image?.id} />
       </div>
       <div className="w-full md:w-1/2 p-4 md:p-8">
@@ -87,7 +87,7 @@ function ProductPreview({ product }) {
             </span>
           )}
         </p>
-        <p className="text-dark mb-6 line-clamp-5">{product.description}</p>
+        {isQuickPreview && <p className="text-dark mb-6 line-clamp-5">{product.description}</p>}
         {product.options[0].name !== "Title" && (
           <ProductVariants options={product.options} variants={product.variants} onVariantSelect={setCurrentVariant} />
         )}
