@@ -145,7 +145,7 @@ export const getProductByHandle = gql`
       handle
       title
       tags
-      description
+      descriptionHtml
       options {
         id
         name
@@ -181,6 +181,14 @@ export const getProductByHandle = gql`
             url
           }
         }
+      }
+      shipping: metafield(namespace: "custom", key: "shipping") {
+        value
+        type
+      }
+      features: metafield(namespace: "custom", key: "features") {
+        value
+        type
       }
     }
   }
