@@ -38,3 +38,6 @@ a {
 p {
   @apply mb-4;
 }
+ul {
+  @apply list-disc list-inside;
+}
