@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
-        <div className="bg-gray-100 py-4 px-2">
+        <div className="bg-gray-100 py-4 px-2 min-h-screen">
           <Header />
           <Component {...pageProps} />
         </div>

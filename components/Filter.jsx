@@ -106,10 +106,10 @@ function Filter({ initialData }) {
         <div className="border-b border-gray-200">
           <h4 className="font-semibold uppercase mb-4">Price</h4>
           <PriceRange
-            min={parsedPrice.min}
-            max={parsedPrice.max}
-            minCurrent={cumulatedFilters.price?.min || parsedPrice.min}
-            maxCurrent={cumulatedFilters.price?.max || parsedPrice.max}
+            min={Math.floor(parsedPrice.min)}
+            max={Math.ceil(parsedPrice.max)}
+            minCurrent={Math.floor(cumulatedFilters.price?.min || parsedPrice.min)}
+            maxCurrent={Math.ceil(cumulatedFilters.price?.max || parsedPrice.max)}
             onChange={({ min, max }) => handleFilters("price", { min, max })}
           />
         </div>

@@ -5,7 +5,10 @@ const Accordion = ({ id, expanded, setExpanded, title, children }) => {
 
   return (
     <div className="bg-white overflow-hidden rounded-md shadow w-full mb-2">
-      <button className="border-b focus:outline-none p-4 text-left w-full" onClick={() => setExpanded(id)}>
+      <button
+        className="border-b focus:outline-none p-4 text-left text-lg font-semibold w-full"
+        onClick={() => setExpanded(id)}
+      >
         {title || "Accordion Title"}
       </button>
       <AnimatePresence initial={false}>

@@ -2,7 +2,15 @@ import { StyledPriceRangeBar, StyledPriceRangeInput } from "@/components/styles/
 import { useMemo } from "react";
 import { TbCurrencyTaka } from "react-icons/tb";
 
-function PriceRange({ min = 0, max = 10000, minCurrent, maxCurrent, priceGapLimit = 500, onChange = () => {} }) {
+function PriceRange({ min = 0, max = 10000, minCurrent, maxCurrent, priceGapLimit = 5, onChange = () => {} }) {
+  const step = useMemo(() => {
+    const range = max - min;
+    if (range <= 100) return 1;
+    if (range <= 1000) return 10;
+    if (range <= 10000) return 100;
+    return Math.ceil(range / 100);
+  }, [min, max]);
+
   const priceRangeLeftGap = useMemo(() => {
     const gapPercentage = (minCurrent * 100) / (max - min);
     return `${gapPercentage}%`;
@@ -42,7 +50,7 @@ function PriceRange({ min = 0, max = 10000, minCurrent, maxCurrent, priceGapLimi
           min={min}
           max={max}
           value={minCurrent}
-          step="100"
+          step={step}
           onInput={handleMinPrice}
         ></StyledPriceRangeInput>
         <StyledPriceRangeInput
@@ -51,7 +59,7 @@ function PriceRange({ min = 0, max = 10000, minCurrent, maxCurrent, priceGapLimi
           min={min}
           max={max}
           value={maxCurrent}
-          step="100"
+          step={step}
           onInput={handleMaxPrice}
         ></StyledPriceRangeInput>
       </div>

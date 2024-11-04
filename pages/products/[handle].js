@@ -8,7 +8,7 @@ import { useState } from "react";
 
 function SingleProduct({ product }) {
     const [expanded, setExpanded] = useState(1);
-    return (<div className="container flex flex-wrap items-center gap-4 my-4 mx-auto">
+    return (<div className="container flex flex-wrap items-center gap-4 py-4 md:py-16 mx-auto">
         <div className="w-full md:w-3/6 flex-grow md:order-1">
             <ProductPreview product={product} isQuickPreview={false}></ProductPreview>
         </div>

@@ -35,3 +35,6 @@ button,
 a {
   @apply font-body;
 }
+p {
+  @apply mb-4;
+}
